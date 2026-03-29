@@ -1,0 +1,55 @@
+{
+  "rules": [
+    ".claude/rules/rtl-generation-rules.md"
+  ],
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r 'if .tool_response.filePath then .tool_response.filePath elif .tool_input.file_path then .tool_input.file_path else empty end' 2>/dev/null | { read -r f; case \"$f\" in /home/loasic/EDA/autortl/autortl/src/verilog/*.v) echo \"[PostToolUse Lint] $f\"; verilator --lint-only --Wall --Wno-fatal \"$f\" 2>&1 | tee -a /home/loasic/EDA/autortl/autortl/sim/logs/lint.log || true;; esac; }",
+            "timeout": 60,
+            "statusMessage": "Running Verilog lint"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PROJECT_ID=$(ls -t ~/.claude/projects/-home-loasic-EDA-autortl-autortl/*.jsonl 2>/dev/null | head -1 | xargs basename 2>/dev/null); TIMESTAMP=$(date '+%Y-%m-%d_%H-%M-%S'); SESSION_FILE=$(ls -t ~/.claude/projects/-home-loasic-EDA-autortl-autortl/*.jsonl 2>/dev/null | head -1); if [ -n \"$SESSION_FILE\" ]; then cp \"$SESSION_FILE\" \"/home/loasic/EDA/autortl/autortl/agent/logs/session_${TIMESTAMP}.jsonl\" && echo \"[$(date '+%Y-%m-%d %%H:%M:%S')] Session saved: session_${TIMESTAMP}.jsonl (${PROJECT_ID})\" >> /home/loasic/EDA/autortl/autortl/sim/logs/notification.log; fi",
+            "timeout": 30,
+            "statusMessage": "Saving session log"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "generation|verification|error|lint",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '\"[\\(.notification.type)] \\(.notification.message)\"' 2>/dev/null >> /home/loasic/EDA/autortl/autortl/sim/logs/notification.log || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'echo \"[ 自动附加上下文 ] 当前分支: $(git branch --show-current 2>/dev/null || echo unknown); 最近提交: $(git log --oneline -1 2>/dev/null || echo none)\"'",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

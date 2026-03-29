@@ -1,0 +1,9 @@
+[debug] Packaging /home/qingyu/edaproject/autortl/target/scala-2.13/riscv-rtl-auto-gen_2.13-1.0.0.jar ...
+[debug] Input file mappings:
+[debug] 	riscv
+[debug] 	  /home/qingyu/edaproject/autortl/target/scala-2.13/classes/riscv
+[debug] 	riscv/ALU.class
+[debug] 	  /home/qingyu/edaproject/autortl/target/scala-2.13/classes/riscv/ALU.class
+[debug] 	riscv/ALU$$anon$1.class
+[debug] 	  /home/qingyu/edaproject/autortl/target/scala-2.13/classes/riscv/ALU$$anon$1.class
+[debug] Done packaging.

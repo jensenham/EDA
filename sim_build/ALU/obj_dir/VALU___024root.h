@@ -1,0 +1,43 @@
+// Verilated -*- C++ -*-
+// DESCRIPTION: Verilator output: Design internal header
+// See VALU.h for the primary calling header
+
+#ifndef VERILATED_VALU___024ROOT_H_
+#define VERILATED_VALU___024ROOT_H_  // guard
+
+#include "verilated.h"
+
+
+class VALU__Syms;
+
+class alignas(VL_CACHE_LINE_BYTES) VALU___024root final {
+  public:
+
+    // DESIGN SPECIFIC STATE
+    VL_IN8(clock,0,0);
+    VL_IN8(reset,0,0);
+    VL_IN8(io_io_opcode,3,0);
+    VL_OUT8(io_io_zero,0,0);
+    CData/*0:0*/ __VstlFirstIteration;
+    CData/*0:0*/ __VicoFirstIteration;
+    VL_IN(io_io_a,31,0);
+    VL_IN(io_io_b,31,0);
+    VL_OUT(io_io_result,31,0);
+    VlUnpacked<QData/*63:0*/, 1> __VstlTriggered;
+    VlUnpacked<QData/*63:0*/, 1> __VicoTriggered;
+
+    // INTERNAL VARIABLES
+    VALU__Syms* vlSymsp;
+    const char* vlNamep;
+
+    // CONSTRUCTORS
+    VALU___024root(VALU__Syms* symsp, const char* namep);
+    ~VALU___024root();
+    VL_UNCOPYABLE(VALU___024root);
+
+    // INTERNAL METHODS
+    void __Vconfigure(bool first);
+};
+
+
+#endif  // guard
